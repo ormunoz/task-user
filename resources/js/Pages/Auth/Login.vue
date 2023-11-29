@@ -13,12 +13,12 @@
         <form @submit.prevent="submitForm">
             <div>
                 <TextInput v-model="form.email" type="email" label="Email" placeholder="Email" />
-                <InputError class="mt-2" :message="'Debe agregar un Email valido'" />
+                <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
                 <TextInput v-model="form.password" type="password" label="Password" placeholder="Password" />
-                <InputError class="mt-2" :message="'Contraseña Incorrecta'" />
+                <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="flex items-center justify-end mt-4">
