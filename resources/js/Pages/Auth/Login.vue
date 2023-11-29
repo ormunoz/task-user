@@ -1,34 +1,3 @@
-<script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-
-defineProps({
-    canResetPassword: Boolean,
-    status: String,
-});
-
-const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
-});
-
-const submit = () => {
-    form.transform(data => ({
-        ...data,
-        remember: form.remember ? 'on' : '',
-    })).post(route('login'), {
-        onFinish: () => form.reset('password'),
-    });
-};
-</script>
-
 <template>
     <Head title="Log in" />
 
@@ -41,50 +10,125 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submitForm">
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <TextInput v-model="form.email" type="email" label="Email" placeholder="Email" />
+                <InputError class="mt-2" :message="'Debe agregar un Email valido'" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="current-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                </label>
+                <TextInput v-model="form.password" type="password" label="Password" placeholder="Password" />
+                <InputError class="mt-2" :message="'Contraseña Incorrecta'" />
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Forgot your password?
-                </Link>
+                <div class="block mt-4">
+                    <label class="flex items-center" style="cursor: pointer;" @click="registerUser">
+                        <span class="ms-2 text-sm text-gray-600">Registrarme</span>
+                    </label>
+                </div>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
+                    @click="submitForm">
                     Log in
                 </PrimaryButton>
             </div>
         </form>
     </AuthenticationCard>
 </template>
+  
+<script>
+import { Head, useForm, router } from '@inertiajs/vue3';
+import AuthenticationCard from '@/Components/AuthenticationCard.vue';
+import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+
+export default {
+    components: {
+        Head,
+        AuthenticationCard,
+        AuthenticationCardLogo,
+        InputError,
+        InputLabel,
+        PrimaryButton,
+        TextInput,
+    },
+    props: {
+        canResetPassword: Boolean,
+        status: String,
+    },
+    setup() {
+        const form = useForm({
+            email: '',
+            password: '',
+        });
+
+
+        const submitForm = () => {
+            form.transform((data) => ({
+                ...data,
+            })).post(route('login'), {
+                onFinish: () => form.reset('password'),
+            });
+        };
+
+        const registerUser = () => {
+            router.get(route('register'));
+
+        };
+
+        return {
+            form,
+            submitForm,
+            registerUser
+        };
+    },
+};
+</script>
+
+<style scoped>
+.login-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    height: 100vh;
+    width: 100vw;
+}
+
+.vertical-center {
+    color: rgb(27, 90, 141);
+    background: rgb(88, 240, 194);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container {
+    background-color: #ffffff;
+}
+
+.logo-container img {
+    max-width: 300px;
+}
+
+.btn-primary {
+    background-color: #003489;
+    border: #003489;
+}
+
+a {
+    color: #003489;
+}
+
+@media (max-width: 575.98px) {
+    .login-container {
+        grid-template-columns: 100%;
+    }
+
+    .logo-container {
+        display: none;
+    }
+}
+</style>

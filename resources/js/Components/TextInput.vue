@@ -1,28 +1,57 @@
-<script setup>
-import { onMounted, ref } from 'vue';
+<template>
+    <div class="form-floating mt-4">
+        <input :type="inputType" class="form-control" :id="inputId" :value="inputValue" @input="updateValue($event)"
+            :placeholder="placeholder">
+        <label v-if="label" :for="inputId">{{ label }}</label>
+    </div>
+</template>
+  
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
 
-defineProps({
-    modelValue: String,
-});
+export default defineComponent({
+    props: {
+        modelValue: {
+            type: [String, Number],
+        },
+        type: {
+            type: String,
+        },
+        label: {
+            type: String,
+        },
+        placeholder: {
+            type: String,
+        }
+    },
+    setup(props, { emit }) {
 
-defineEmits(['update:modelValue']);
+        const inputId = `floatingInput-${Math.random().toString(36).substr(2, 9)}`;
+        const inputValue = ref<number | string>(props.modelValue || '');
+        const inputType = ref<string>(props.type ? props.type : 'text');
 
-const input = ref(null);
+        if (typeof props.modelValue === 'number') {
+            inputValue.value = props.modelValue;
+        }
 
-onMounted(() => {
-    if (input.value.hasAttribute('autofocus')) {
-        input.value.focus();
+        const updateValue = (event: InputEvent) => {
+            const value = event.target instanceof HTMLInputElement ? event.target.value : '';
+            inputValue.value = value;
+
+            if (props.type === 'number' && !isNaN(value as any)) {
+                emit('update:modelValue', parseFloat(value as string));
+            } else {
+                emit('update:modelValue', value);
+            }
+        };
+
+        return {
+            inputId,
+            inputType,
+            updateValue,
+            inputValue
+        };
     }
 });
-
-defineExpose({ focus: () => input.value.focus() });
 </script>
-
-<template>
-    <input
-        ref="input"
-        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
-    >
-</template>
+  
