@@ -4,13 +4,13 @@
             <div class="container-fluid">
                 <!-- Logo -->
                 <div class="navbar-brand">
-                    <Link :href="route('dashboard')">
+                    <Link :href="route('user-task')">
                     <ApplicationMark class="block h-9 w-auto" />
                     </Link>
                 </div>
                 <!-- Navigation Links -->
                 <div>
-                    <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <NavLink :href="route('user-task')" :active="route().current('user-task')">
                         Menu
                     </NavLink>
                 </div>
@@ -19,7 +19,7 @@
                     <!-- Navigation Links -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                            <NavLink :href="route('user-task')" :active="route().current('user-task')">
                                 Menu
                             </NavLink>
                         </li>
