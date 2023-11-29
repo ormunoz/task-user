@@ -33,7 +33,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/user-task', function () {
+        return Inertia::render('UserTask');
+    })->name('user-task');
 });
