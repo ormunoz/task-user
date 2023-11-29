@@ -1,10 +1,10 @@
-<script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
-</script>
+
 
 <template>
-    <AppLayout title="user-task">
+    <AppLayout >
+
+        <Head title="Configuración" />
+
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Tareas del usuario: {{ $page.props.user.email }}
@@ -20,3 +20,9 @@ import Welcome from '@/Components/Welcome.vue';
         </div>
     </AppLayout>
 </template>
+
+<script setup>
+import { Head } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import Welcome from '@/Components/Welcome.vue';
+</script>
