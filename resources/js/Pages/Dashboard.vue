@@ -7,7 +7,7 @@ import Welcome from '@/Components/Welcome.vue';
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
+                Tareas del usuario: {{ $page.props.user.email }}
             </h2>
         </template>
 
