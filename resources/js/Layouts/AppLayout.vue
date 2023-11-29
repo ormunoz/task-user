@@ -48,7 +48,7 @@
                         <template #content>
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                Configuracion
+                                Configuración
                             </div>
                             <DropdownLink :href="route('profile.show')">
                                 Perfil
@@ -95,7 +95,7 @@ export default defineComponent({
         NavLink,
         Link
     },
-    setup(props, { emit }) {
+    setup() {
 
         const switchToTeam = (team) => {
             router.put(route('current-team.update'), {
